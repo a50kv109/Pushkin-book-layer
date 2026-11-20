@@ -1,0 +1,14 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "pushkin-book-layer"
+version = "0.1.1"
+description = "Source-grounded literary PDF ingestion adapter for PushkinRhymeEngine (Stage C adoption of PushkinBookLayer 0.1)"
+requires-python = ">=3.10"
+dependencies = ["PyMuPDF>=1.24"]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]

@@ -1,0 +1,167 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pushkin-rhyme-machine.local/schemas/visual-anchor.schema.json",
+  "title": "Pushkin Visual & Narrative Anchor Schema V1",
+  "description": "Schema for reusable visual and narrative reference anchors in Pushkin Visual Pattern Library. Anchors capture artistic patterns (composition, environment, characters, actions, decor, atmosphere, narrative potential) without asserting historical factuality.",
+  "type": "object",
+  "required": [
+    "anchor_id",
+    "anchor_name",
+    "anchor_category",
+    "library_categories",
+    "source_image",
+    "source_type",
+    "visual_description",
+    "composition_features",
+    "environment_features",
+    "character_features",
+    "action_features",
+    "decorative_features",
+    "color_palette",
+    "atmosphere",
+    "narrative_potential",
+    "generation_guidance",
+    "related_anchors",
+    "confidence",
+    "historical_status",
+    "processing_status"
+  ],
+  "properties": {
+    "anchor_id": {
+      "type": "string",
+      "pattern": "^VA-[A-Z0-9-]+$",
+      "description": "Unique identifier for the visual anchor (e.g., VA-CRIMEA-PROMENADE-001)."
+    },
+    "anchor_name": {
+      "type": "string",
+      "minLength": 2,
+      "description": "Human-readable title of the visual anchor."
+    },
+    "anchor_category": {
+      "type": "string",
+      "description": "Composite pattern classification (e.g., ENVIRONMENT + CHARACTER + COMPOSITION)."
+    },
+    "library_categories": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "enum": [
+          "Crimea & Tavrida",
+          "Yalta",
+          "Bakhchisarai",
+          "Architecture",
+          "Nature & Landscape",
+          "Characters",
+          "Romantic Scenes",
+          "Journey",
+          "Poetry & Literature",
+          "Decorative Design",
+          "Postcard Composition"
+        ]
+      },
+      "description": "Filterable categories in the Visual Library UI."
+    },
+    "literary_space": {
+      "type": "string",
+      "description": "Extensible cultural/geographical/literary context (e.g., 'Крым и Таврида', 'Бахчисарай', 'Михайловское', 'Петербург'). Allows expansion beyond Crimea."
+    },
+    "source_image": {
+      "type": "string",
+      "description": "Relative public path or URI to the original preserved asset."
+    },
+    "source_type": {
+      "type": "string",
+      "description": "Origin classification (e.g., 'Современная ИИ-стилизованная иллюстрация', 'Стилизованная почтовая открытка', 'Историческая гравюра')."
+    },
+    "visual_description": {
+      "type": "string",
+      "description": "Factual description of what is depicted in the visual reference."
+    },
+    "composition_features": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Structural layout patterns (e.g., 'Центральная фигура', 'Многочастная открытка', 'Панорамный пейзаж')."
+    },
+    "environment_features": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Spatial and architectural features."
+    },
+    "character_features": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Role-based character archetypes without claiming documentary identity from facial likeness."
+    },
+    "action_features": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Depicted activities and gestures."
+    },
+    "decorative_features": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Ornamental frames, botanical motifs, vignettes, calligraphy."
+    },
+    "color_palette": {
+      "type": "object",
+      "required": ["labels", "hex"],
+      "properties": {
+        "labels": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "hex": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^#[0-9A-Fa-f]{6}$" }
+        },
+        "lighting": { "type": "string" }
+      }
+    },
+    "atmosphere": {
+      "type": "string",
+      "description": "Dominant emotional tone and mood."
+    },
+    "narrative_potential": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Possible literary motifs and story directions inspired by the scene."
+    },
+    "generation_guidance": {
+      "type": "string",
+      "description": "Practical guidance for using this anchor in visual prompt synthesis or poetic inspiration."
+    },
+    "related_anchors": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "IDs of related anchors forming thematic or compositional series."
+    },
+    "motif_keywords": {
+      "type": "array",
+      "items": { "type": "string" },
+      "description": "Russian stem/motif tokens used for transparent poem-to-anchor matching in Mode 2."
+    },
+    "confidence": {
+      "type": "string",
+      "enum": ["high", "medium", "low"],
+      "description": "Cataloging confidence based on direct visual inspection."
+    },
+    "historical_status": {
+      "type": "string",
+      "description": "Explicit note distinguishing artistic/AI stylization from documentary historical evidence."
+    },
+    "processing_status": {
+      "type": "string",
+      "enum": ["VERIFIED", "IMPLEMENTED", "REPORTED", "PLANNED", "UNSUPPORTED"],
+      "description": "Actual file inspection and processing state."
+    },
+    "technical_metadata": {
+      "type": "object",
+      "properties": {
+        "dimensions": { "type": "string" },
+        "format": { "type": "string" },
+        "variant_note": { "type": "string" }
+      }
+    }
+  }
+}

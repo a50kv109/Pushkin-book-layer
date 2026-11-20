@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pushkin-rhyme-engine.local/schemas/source-evidence-package.v1.json",
+  "title": "SourceEvidencePackage",
+  "description": "Independent provenance-carrying data contract emitted by source_validation for future C1 and M8 modules without creating stub implementations.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "package_version",
+    "work_id",
+    "edition_id",
+    "witness_id",
+    "page_ref",
+    "fragment_id",
+    "source_hash",
+    "extraction_status",
+    "line_semantics",
+    "source_class",
+    "text",
+    "semantic_analysis_allowed",
+    "prosodic_analysis_allowed",
+    "blocking_reasons"
+  ],
+  "properties": {
+    "package_version": {
+      "const": "1.0.0"
+    },
+    "work_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "edition_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "witness_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "page_ref": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["pdf_page", "printed_page", "page_role"],
+        "properties": {
+          "pdf_page": { "type": "integer", "minimum": 1 },
+          "printed_page": { "type": ["string", "null"] },
+          "page_role": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "fragment_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "source_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "document_sha256": {
+      "type": ["string", "null"],
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "extraction_status": {
+      "type": "string",
+      "enum": ["TEXT_LAYER", "SCANNED_PAGE", "PARTIAL", "FAILED"]
+    },
+    "line_semantics": {
+      "type": "string",
+      "enum": [
+        "PDF_TEXT_LINE_UNCLASSIFIED",
+        "VERIFIED_VERSE_LINE",
+        "VERIFIED_PROSE_BLOCK",
+        "MIXED_UNVERIFIED",
+        "NONE"
+      ]
+    },
+    "source_class": {
+      "type": "string",
+      "enum": [
+        "PRIMARY_CANONICAL_TEXT",
+        "EARLY_REDACTION",
+        "AUTHORIAL_DRAFT",
+        "EDITORIAL_COMMENTARY",
+        "INDEX_OR_METADATA",
+        "SYNTHETIC_FIXTURE"
+      ]
+    },
+    "text": {
+      "type": "string"
+    },
+    "semantic_analysis_allowed": {
+      "type": "boolean"
+    },
+    "prosodic_analysis_allowed": {
+      "type": "boolean"
+    },
+    "blocking_reasons": {
+      "type": "array",
+      "items": { "type": "string" }
+    },
+    "completeness_note": {
+      "type": ["string", "null"]
+    }
+  }
+}

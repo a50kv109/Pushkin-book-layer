@@ -1,0 +1,129 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://pushkin-rhyme-engine.local/schemas/pushkin-poetic-profile.v1.json",
+  "title": "PushkinPoeticProfileV1",
+  "description": "Formal JSON schema for extracted poetic profiles separating COMPUTED_BY_ENGINE measurements from COMMENTARY_ASSERTED notes.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "profile_id",
+    "work",
+    "witness",
+    "provenance",
+    "genre_form",
+    "prosody_metrics",
+    "commentary_hypotheses"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "profile_id": { "type": "string", "pattern": "^[a-z0-9_\\-]+$" },
+    "work": {
+      "type": "object",
+      "required": ["work_id", "title", "author"],
+      "properties": {
+        "work_id": { "type": "string" },
+        "title": { "type": "string" },
+        "author": { "type": "string" },
+        "composition_period": { "type": "string" }
+      }
+    },
+    "witness": {
+      "type": "object",
+      "required": ["witness_id", "witness_role", "extraction_status", "document_id"],
+      "properties": {
+        "witness_id": { "type": "string" },
+        "witness_role": {
+          "type": "string",
+          "enum": ["MAIN_EDITION", "EARLY_REDACTION", "DRAFT_FRAGMENT", "DIGITAL_VERIFIED_TEXT"]
+        },
+        "extraction_status": {
+          "type": "string",
+          "enum": ["TEXT_LAYER", "OCR_HUMAN_VERIFIED", "PARTIAL", "SCANNED_PAGE"]
+        },
+        "document_id": { "type": "string" },
+        "pdf_sha256": { "type": "string" },
+        "page_refs": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["pdf_page", "page_role"],
+            "properties": {
+              "pdf_page": { "type": "integer", "minimum": 1 },
+              "printed_page": { "type": ["string", "null"] },
+              "page_role": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
+    "provenance": {
+      "type": "object",
+      "required": ["origin", "analyzer_version", "generated_at"],
+      "properties": {
+        "origin": { "type": "string", "enum": ["COMPUTED_BY_ENGINE", "BENCHMARK_CURATED"] },
+        "analyzer_version": { "type": "string" },
+        "generated_at": { "type": "string", "format": "date-time" },
+        "source_text_sha256": { "type": "string" }
+      }
+    },
+    "genre_form": {
+      "type": "string",
+      "enum": ["LYRIC_STANZAIC", "VERSE_DRAMA_MIXED", "NARRATIVE_POEM", "ONEGIN_STANZA_NOVEL", "PROSE_PASSAGE"]
+    },
+    "prosody_metrics": {
+      "type": "object",
+      "required": ["dominant_meter", "rhyme_mode", "line_count", "meter_distribution", "pyrrhic_rate", "ambiguity_rate"],
+      "properties": {
+        "dominant_meter": {
+          "type": "string",
+          "enum": ["IAMB_4", "IAMB_5", "IAMB_FREE", "TROCHEE_4", "TROCHEE_8", "AMPHIBRACH", "MIXED", "PROSE"]
+        },
+        "caesura_profile": {
+          "type": "object",
+          "properties": {
+            "expected_after_foot": { "type": ["integer", "null"] },
+            "caesura_adherence_rate": { "type": "number", "minimum": 0, "maximum": 1 }
+          }
+        },
+        "rhyme_mode": {
+          "type": "string",
+          "enum": ["ALTERNATING_ABAB", "ENCLOSED_ABBA", "COUPLET_AABB", "ONEGIN_14", "BLANK_WITH_LOCAL_ACCENTS", "BLANK_STRICT", "NONE"]
+        },
+        "stanza_pattern": { "type": ["string", "null"] },
+        "line_count": { "type": "integer", "minimum": 0 },
+        "prose_block_count": { "type": "integer", "minimum": 0 },
+        "split_verse_count": { "type": "integer", "minimum": 0 },
+        "meter_distribution": {
+          "type": "object",
+          "additionalProperties": { "type": "number", "minimum": 0, "maximum": 1 }
+        },
+        "clausula_distribution": {
+          "type": "object",
+          "properties": {
+            "M": { "type": "number", "minimum": 0, "maximum": 1 },
+            "F": { "type": "number", "minimum": 0, "maximum": 1 },
+            "D": { "type": "number", "minimum": 0, "maximum": 1 }
+          }
+        },
+        "pyrrhic_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+        "ambiguity_rate": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "commentary_hypotheses": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["origin", "claim", "source_citation", "verification_status"],
+        "properties": {
+          "origin": { "const": "COMMENTARY_ASSERTED" },
+          "claim": { "type": "string" },
+          "source_citation": { "type": "string" },
+          "verification_status": {
+            "type": "string",
+            "enum": ["UNVERIFIED_BY_ENGINE", "CONFIRMED_BY_ENGINE", "DIVERGES_FROM_ENGINE"]
+          }
+        }
+      }
+    }
+  }
+}
